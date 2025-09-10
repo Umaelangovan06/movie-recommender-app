@@ -39,7 +39,7 @@ def Recommend(movie):
         return movieList
 
 
-frontend_build_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../movie-recommender-frontend/build')
+frontend_build_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'movie-recommender-frontend/build')
 
 app = Flask(__name__, static_folder=frontend_build_dir, static_url_path='/')
 CORS(app)
