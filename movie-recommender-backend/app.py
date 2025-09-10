@@ -39,11 +39,15 @@ def Recommend(movie):
         return movieList
 
 
-frontend_build_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'movie-recommender-frontend/build')
+frontend_build_dir = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),  # backend folder
+    '../movie-recommender-frontend/build'       # up one level, then frontend/build
+)
+
+print("React build folder path:", frontend_build_dir)
+print("index.html exists?", os.path.exists(os.path.join(frontend_build_dir, 'index.html')))
 
 app = Flask(__name__, static_folder=frontend_build_dir, static_url_path='/')
-CORS(app)
-
 CORS(app)
 
 @app.route('/api/movies', methods=['GET'])
