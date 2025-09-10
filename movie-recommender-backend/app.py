@@ -4,7 +4,7 @@ from flask_cors import CORS, cross_origin
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from flask import Flask, request, render_template, jsonify
-
+import os
 
 def createSimilarity():
     data = pd.read_csv('main_data.csv') # reading the dataset
@@ -39,8 +39,11 @@ def Recommend(movie):
         return movieList
 
 
-app = Flask(__name__, static_folder='../movie-recommender-frontend/build',
-            static_url_path='/')
+frontend_build_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../movie-recommender-frontend/build')
+
+app = Flask(__name__, static_folder=frontend_build_dir, static_url_path='/')
+CORS(app)
+
 CORS(app)
 
 @app.route('/api/movies', methods=['GET'])
@@ -55,7 +58,7 @@ def movies():
 @app.route('/')
 @cross_origin()
 def serve():
-    return send_from_directory(app.static_folder, 'index.html')
+     return send_from_directory(frontend_build_dir, 'index.html')
 
 
 @app.route('/api/similarity/<name>')
@@ -76,7 +79,7 @@ def similarity(name):
 
 @app.errorhandler(404)
 def not_found(e):
-    return send_from_directory(app.static_folder, 'index.html')
+    return send_from_directory(frontend_build_dir, 'index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
